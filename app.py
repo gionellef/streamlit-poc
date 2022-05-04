@@ -82,7 +82,7 @@ def filter_data(
 
 
 def main() -> None:
-    st.header("Academic Affairs Dashboard :bar_chart:")
+    st.header("Student Affairs Dashboard :bar_chart:")
 
     with st.expander("Purpose"):
         st.write(Path("README.md").read_text())
@@ -175,8 +175,8 @@ def main() -> None:
     
     
     def draw_bar(y_val: str) -> None:
-        fig = px.bar(df, y=y_val, x="course", **COMMON_ARGS)
-        fig.update_layout(barmode="stack", xaxis={"categoryorder": "total descending"})
+        fig = px.pie(df, y=y_val, x="course", **COMMON_ARGS)
+        # fig = px.pie(df, values='course', names='country', title='Population of European continent')
         chart(fig)
 
     account_plural = "s" # if len(account_selections) > 1 else ""

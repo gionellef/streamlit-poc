@@ -1,9 +1,1 @@
-﻿Student Number,College,Course,Description,Quantity,Last Price,Last Price Change,Tuition Amount,Today's Gain/Loss Dollar,Today's Gain/Loss Percent,Total Gain/Loss Dollar,Total Gain/Loss Percent,Percent Of Account,Cost Basis,Cost Basis Per Share,Type,upm_affairs,Current Population
-201151441,CPH,Public Health,College of Arts and Sciences,41.28,$441.41,+$4.24,$2512.62,+$111.14,4.44%,+$48.41,0.84%,11.91%,$1440.09,$418.14,Cash,Academic Affairs,1428
-212132412,CD,Dentistry,College of Dentistry,48.208,$101.24,-$4.11,$2634.55,-$115.01,-4.14%,-$18.98,-1.19%,11.19%,$1111.14,$101.04,Cash,Research,1091
-202012354,CAS,Biology,College of Public Health,59.452,$50.98,+$0.00,$9747.24,+$0.00,0.00%,+$21.12,13.34%,10.51%,$4188.94,$51.41,Cash,Administration and Finance,4101
-202212315,CM,Intarmed,College of Medicine,10.194,$144.01,+$4.29,$8632.11,+$29.15,4.15%,+$401.14,8.94%,8.92%,$4191.12,$119.40,Cash,Planning and Development,1959
-201883675,CAMP,Speech Pathology,College of Allied Medical Professions,15.444,$441.41,-$4.24,$4315.23,-$92.48,-4.44%,-$54.21,-1.94%,42.12%,$1518.41,$441.42,Cash,Extension Services,1185
-200875738,CP,Industrial Pharmacy,College of Pharmacy,11.415,$112.12,+$5.00,$7825.15,+$81.14,4.24%,+$904.41,49.89%,44.41%,$4111.10,$154.54,Cash,Academic Affairs,1208
-201982757,CN,Nursing,College of Nursing,99.195,$11.41,-$0.14,$8663.78,-$44.24,-4.11%,-$112.20,-8.11%,5.85%,$1482.91,$15.94,Credit,Student Affairs,1198
-201685732,CAS,Computer Science,College of Arts and Sciences,81.854,$14.11,+$0.45,$6289.88,+$44.41,4.14%,+$101.12,2.05%,5.85%,$1424.51,$11.51,Credit,Planning and Development,1198
+﻿College,Degree Program,Number of Students
