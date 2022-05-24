@@ -4,9 +4,6 @@ from pathlib import Path
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-import plotly.graph_objects as go
-import numpy as np
-
 
 
 def app():
@@ -56,25 +53,32 @@ def app():
         faculty_dist['type_count'] = faculty_dist.groupby('Type')['Type'].transform('count')
         faculty_dist['count'] = faculty_dist.groupby('Department')['Department'].transform('count')
         # st.write(faculty_dist)
-        fig = px.bar(faculty_dist, x="Department", y="count", color="Type")
-        g2.plotly_chart(fig, use_container_width=True)
+        fig2 = px.bar(faculty_dist, x="Department", y="count", color="Type", labels={"Department": "Department", "count": "Faculty count"})
+        g2.plotly_chart(fig2, use_container_width=True)
 
-
-        student_df['Enrollment_Date'] = pd.to_datetime(student_df['Enrollment_Date']).dt.strftime('%Y-%m-%d')
+        st.markdown("### Students Masterlist")
+        student_df['Enrollment_Date'] = pd.to_datetime(student_df['Enrollment_Date']).dt.strftime('%Y')
         student_df = student_df.sort_values(by='Enrollment_Date', ascending=True)
-        st.write(student_df)
         
         course_options = student_df['Course'].unique().tolist()
 
-        # date_options = student_df['Enrollment_Date'].unique().tolist()
-        # date = st.selectbox('Which date would you like to see?', date_options, 100)
-        student_df['count'] = student_df.groupby('Course')['Course'].transform('count')
+        date_options = student_df['Enrollment_Date'].unique().tolist()
+        date = st.selectbox('Which date would you like to see?', date_options, 7)
         course = st.multiselect('Which courses would you like to see?', course_options, ['BS Computer Science'])
 
         student_df = student_df[student_df['Course'].isin(course)]
-        # student_df = student_df[student_df['Enrollment_Date']<date]
+        
 
-        fig2 = px.bar(student_df, x='Course', y='count', color='Course', animation_frame="Enrollment_Date", animation_group="Course")
-        fig2.update_layout(width=800)
+        # Count students on a time series
+        student_df['count'] = student_df.groupby('Course')['Course'].transform('count')
+        student_df = student_df[student_df['Enrollment_Date']<=date]
+        st.write(student_df)
+
+        fig2 = px.histogram(student_df, x='Course', y='count', color='Course',
+                labels={
+                        "Course": "Course",
+                        "count": "Enrolled Students"       
+                }, title="Student Population Histogram")
+        fig2.update_layout(width=1200, )
         st.write(fig2)
 

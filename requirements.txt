@@ -1,6 +1,7 @@
 plotly
 streamlit
 streamlit-aggrid
+streamlit-authenticator
 pandas
 plotly
 openpyxl

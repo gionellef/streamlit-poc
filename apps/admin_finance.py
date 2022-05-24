@@ -1,12 +1,10 @@
 import functools
 from pathlib import Path
+from turtle import color
 
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-import plotly.graph_objects as go
-import numpy as np
-
 
 def app():
     header = st.container()
@@ -18,63 +16,47 @@ def app():
         
        
     with dataset:
-        faculty_df = pd.read_excel('data/studentdb.xlsx', sheet_name = 'faculty')
         student_df = pd.read_excel('data/studentdb.xlsx', sheet_name = 'students')
-        mask = (student_df['Enrollment_Date'] > '2021-1-1') & (student_df['Enrollment_Date'] <= '2022-02-02')
-        curr_student_df = student_df.loc[mask]
+        demog_df = pd.read_excel('data/studentdb.xlsx', sheet_name = 'demographic')
+        project_df = pd.read_excel('data/financedb.xlsx', sheet_name = 'Projects')
+        payroll_df = pd.read_excel('data/financedb.xlsx', sheet_name = 'payroll_summary')
         
         st.markdown("### Key Metrics:")
 
         m1, m2, m3 = st.columns(3)
 
-        m1.metric(label = "Currently Enrolled Students",
-                value = len(curr_student_df.value_counts()))
+        m1.metric(label = "Total Current UPM Employees",
+                value = len(student_df.value_counts()))
 
-        m2.metric(label = "University Scholars",
-                value = curr_student_df.University_Scholar.value_counts().Yes)
+        m2.metric(label = "Job Order Staff",
+                value = student_df.University_Scholar.value_counts().Yes)
         
-        m3.metric(label = "Students with Loans",
-                value = curr_student_df.Student_Loan.value_counts().Yes)
+        m3.metric(label = "Permanent Staff",
+                value = student_df.Student_Loan.value_counts().Yes)
 
 
         st.markdown("### Visualizations: ")
         g1, g2 = st.columns((1,1))
         
-        college_dist = pd.DataFrame(curr_student_df['College'].value_counts())
-        college_dist = college_dist.reset_index()
-        college_dist = college_dist.head(15)
-        college_dist.columns = ['College', 'count']
-        fig = px.pie(college_dist, values = 'count', names = "College")
-        g1.markdown("##### College distribution of currently enrolled students:")
+        total_spending = pd.DataFrame(demog_df[['Year', 'Infrastructure', 'PGH', 'Payroll', 'Utilities']])
+        total_spending = total_spending.reset_index()
+
+        fig = px.line(total_spending,  x='Year', y=["Infrastructure", "PGH", 'Payroll', 'Utilities'], labels={"value": "Amount in millions"})
+
+        g1.markdown("##### UPM Spending:")
         g1.plotly_chart(fig, use_container_width=True)
         
         
-        g2.markdown("##### Faculty by department:")
-        faculty_dist = pd.DataFrame(faculty_df[['Department', 'Type']].value_counts())
-        #g2.bar_chart(faculty_dist, 0, 400, use_container_width=True)
+        project_df = pd.DataFrame(project_df[["R&D Spend", "Administration", "Marketing Spend", "State", "Profit"]])
+        fig2 = px.bar(project_df, x='State', y=["R&D Spend", "Administration", "Marketing Spend", "Profit"], barmode='group', labels={"State": "College", "value": "Amount"})
+        g2.markdown("##### Financial Breakdown:")
+        g2.plotly_chart(fig2, use_container_width=True)
+
+
+        ### Salary slider
+        payroll_df = pd.DataFrame(payroll_df[["Designation", "Gross Salary", "Deduction Amount", "Net Pay", "Pay Hike Amount", "Incentive"]])
+        salary = st.slider ('Salary filter', 0, 1000000, 1)
+
+        payroll_df = payroll_df[payroll_df['Gross Salary'] <= salary]
+        st.write(payroll_df)
         
-        faculty_dist = faculty_dist.reset_index()
-        faculty_dist['type_count'] = faculty_dist.groupby('Type')['Type'].transform('count')
-        faculty_dist['count'] = faculty_dist.groupby('Department')['Department'].transform('count')
-        # st.write(faculty_dist)
-        fig = px.bar(faculty_dist, x="Department", y="count", color="Type")
-        g2.plotly_chart(fig, use_container_width=True)
-
-
-        student_df['Enrollment_Date'] = pd.to_datetime(student_df['Enrollment_Date']).dt.strftime('%Y-%m-%d')
-        student_df = student_df.sort_values(by='Enrollment_Date', ascending=True)
-        st.write(student_df)
-        
-        course_options = student_df['Course'].unique().tolist()
-
-        # date_options = student_df['Enrollment_Date'].unique().tolist()
-        # date = st.selectbox('Which date would you like to see?', date_options, 100)
-        student_df['count'] = student_df.groupby('Course')['Course'].transform('count')
-        course = st.multiselect('Which courses would you like to see?', course_options, ['BS Computer Science'])
-
-        student_df = student_df[student_df['Course'].isin(course)]
-        # student_df = student_df[student_df['Enrollment_Date']<date]
-
-        fig2 = px.bar(student_df, x='Course', y='count', color='Course', animation_frame="Enrollment_Date", animation_group="Course")
-        fig2.update_layout(width=800)
-        st.write(fig2)
