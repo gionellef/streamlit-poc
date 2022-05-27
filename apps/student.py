@@ -24,7 +24,7 @@ def app():
         m1, m2, m3 = st.columns(3)
 
         m1.metric(label = "Currently Enrolled Students",
-                value = len(curr_student_df.value_counts()))
+                value = len(student_df.value_counts()))
 
         m2.metric(label = "University Scholars",
                 value = curr_student_df.University_Scholar.value_counts().Yes)
