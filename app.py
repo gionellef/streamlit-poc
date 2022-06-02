@@ -14,7 +14,7 @@ app = MultiApp()
 
 
 app.add_app("Home", home.app)
-app.add_app("Student Affairs", student.app)
+app.add_app("Academic Affairs", student.app)
 app.add_app("Administration and Finance", admin_finance.app)
 
 # The main app

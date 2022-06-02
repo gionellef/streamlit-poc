@@ -11,7 +11,7 @@ def app():
     dataset = st.container()
 
     with header:
-        st.title("Student Affairs Executive Dashboard :bar_chart:")
+        st.title("Academic Affairs Executive Dashboard :bar_chart:")
        
     with dataset:
         faculty_df = pd.read_excel('data/studentdb.xlsx', sheet_name = 'faculty')
